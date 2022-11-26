@@ -28,8 +28,12 @@ fn main() {
     if let Some(port) = list_ports() {
         if let Ok(mut open_port) = serialport::new(port, 57600).open() {
             println!("Opened port {}", open_port.name().unwrap());
-            open_port.set_parity(Parity::None);
-            open_port.set_data_bits(DataBits::Eight);
+            open_port
+                .set_parity(Parity::None)
+                .expect("Set parity failed");
+            open_port
+                .set_data_bits(DataBits::Eight)
+                .expect("Set data bits failed");
             open_port
                 .write(string_to_send.as_bytes())
                 .expect("Write failed");
