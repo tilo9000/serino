@@ -9,11 +9,30 @@ fn get_parameter() -> String {
     "TEST".to_string()
 }
 
-fn main() {
-    println!("{}", get_parameter());
+fn list_ports() -> Option<String> {
+    println!("Available ports:");
+    if let Ok(sis) = available_ports() {
+        for si in &sis {
+            println!(" {}", si.port_name)
+        }
+        if sis.len() == 1 {
+            return Some(sis[0].port_name.clone());
+        }
+    }
+    None
+}
 
-    match available_ports() {
-        Ok(ok_var) => println!("Ok {:?}", ok_var),
-        _ => println!("Error"),
+fn main() {
+    let string_to_send = get_parameter();
+    println!("String to send: {}", string_to_send);
+    if let Some(port) = list_ports() {
+        if let Ok(mut open_port) = serialport::new(port, 57600).open() {
+            println!("Opened port {}", open_port.name().unwrap());
+            open_port.set_parity(Parity::None);
+            open_port.set_data_bits(DataBits::Eight);
+            open_port
+                .write(string_to_send.as_bytes())
+                .expect("Write failed");
+        }
     }
 }

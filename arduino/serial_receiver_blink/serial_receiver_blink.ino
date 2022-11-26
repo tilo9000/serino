@@ -26,10 +26,15 @@ void loop() {
   int bytes_read = 0;
   bytes_read = Serial.readBytes(buffer, BUFFER_SIZE);
   if (bytes_read != 0) {
-    char output[80];
-    for (int b = 0; b < bytes_read; b++) {
-      sprintf(output, "Received(%d): %02x", b, buffer[b]);
-      Serial.println(output);
+    if (buffer[0] > 0x40) {
+      blink(buffer[0] - 0x40);
     }
+
+
+    // char output[80];
+    // for (int b = 0; b < bytes_read; b++) {
+    //   sprintf(output, "Received(%d): %02x", b, buffer[b]);
+    //   Serial.println(output);
+    // }
   }
 }
