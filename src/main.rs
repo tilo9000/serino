@@ -26,7 +26,7 @@ fn main() {
     let string_to_send = get_parameter();
     println!("String to send: {}", string_to_send);
     if let Some(port) = list_ports() {
-        if let Ok(mut open_port) = serialport::new(port, 57600).open() {
+        if let Ok(mut open_port) = serialport::new(&port, 57600).open() {
             println!("Opened port {}", open_port.name().unwrap());
             open_port
                 .set_parity(Parity::None)
@@ -37,6 +37,8 @@ fn main() {
             open_port
                 .write(string_to_send.as_bytes())
                 .expect("Write failed");
+        } else {
+            println!("Can't open port {}", port)
         }
     }
 }
