@@ -1,6 +1,7 @@
 #define BUFFER_SIZE 5
 
 byte buffer[BUFFER_SIZE];
+char output[80];
 
 void setup() {
   // initialize digital pin LED_BUILTIN as an output.
@@ -29,12 +30,7 @@ void loop() {
     if (buffer[0] > 0x40) {
       blink(buffer[0] - 0x40);
     }
-
-
-    // char output[80];
-    // for (int b = 0; b < bytes_read; b++) {
-    //   sprintf(output, "Received(%d): %02x", b, buffer[b]);
-    //   Serial.println(output);
-    // }
+    // sprintf(output, "Received(%d): %02x", bytes_read, buffer[0]);
+    // Serial.println(output);
   }
 }
